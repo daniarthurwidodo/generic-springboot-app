@@ -2,6 +2,7 @@ package com.company.project.presentation;
 
 import com.company.project.application.TodoService;
 import com.company.project.domain.Todo;
+import com.company.project.dto.ErrorResponse;
 import com.company.project.dto.TodoRequest;
 import com.company.project.dto.TodoResponse;
 import io.swagger.v3.oas.annotations.Operation;
@@ -54,18 +55,22 @@ public class TodoController {
     @GetMapping("/{id}")
     @Operation(summary = "Get todo by ID", description = "Retrieves a specific todo item by its ID")
     @ApiResponses.TodoFound
-    public ResponseEntity<TodoResponse> getTodoById(
+    public ResponseEntity<?> getTodoById(
             @Parameter(description = "The unique ID of the todo") @PathVariable Long id) {
         log.debug("Received request to get todo by id: {}", id);
-        return todoService.getTodoById(id)
-                .map(todo -> ResponseEntity.ok(toResponse(todo)))
-                .orElse(ResponseEntity.notFound().build());
+        var todo = todoService.getTodoById(id);
+        if (todo.isPresent()) {
+            return ResponseEntity.ok(toResponse(todo.get()));
+        } else {
+            return ResponseEntity.status(404)
+                    .body(new ErrorResponse("Todo not found", "Todo with the specified ID does not exist"));
+        }
     }
 
     @PutMapping("/{id}")
     @Operation(summary = "Update a todo", description = "Updates an existing todo item with new title and description")
     @ApiResponses.TodoUpdated
-    public ResponseEntity<TodoResponse> updateTodo(
+    public ResponseEntity<?> updateTodo(
             @Parameter(description = "The unique ID of the todo") @PathVariable Long id,
             @Valid @RequestBody TodoRequest request) {
         log.info("Received request to update todo with id: {}", id);
@@ -74,14 +79,15 @@ public class TodoController {
             return ResponseEntity.ok(toResponse(todo));
         } catch (IllegalArgumentException e) {
             log.warn("Todo not found for update with id: {}", id);
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.status(404)
+                    .body(new ErrorResponse("Todo not found", "Todo with the specified ID does not exist"));
         }
     }
 
     @PatchMapping("/{id}/toggle")
     @Operation(summary = "Toggle todo completion", description = "Toggles the completion status of a todo item")
     @ApiResponses.TodoFound
-    public ResponseEntity<TodoResponse> toggleTodoCompletion(
+    public ResponseEntity<?> toggleTodoCompletion(
             @Parameter(description = "The unique ID of the todo") @PathVariable Long id) {
         log.info("Received request to toggle todo completion with id: {}", id);
         try {
@@ -89,14 +95,15 @@ public class TodoController {
             return ResponseEntity.ok(toResponse(todo));
         } catch (IllegalArgumentException e) {
             log.warn("Todo not found for toggle with id: {}", id);
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.status(404)
+                    .body(new ErrorResponse("Todo not found", "Todo with the specified ID does not exist"));
         }
     }
 
     @DeleteMapping("/{id}")
     @Operation(summary = "Delete a todo", description = "Deletes a todo item by its ID")
     @ApiResponses.TodoDeleted
-    public ResponseEntity<Void> deleteTodo(
+    public ResponseEntity<?> deleteTodo(
             @Parameter(description = "The unique ID of the todo") @PathVariable Long id) {
         log.info("Received request to delete todo with id: {}", id);
         try {
@@ -104,7 +111,8 @@ public class TodoController {
             return ResponseEntity.noContent().build();
         } catch (IllegalArgumentException e) {
             log.warn("Todo not found for delete with id: {}", id);
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.status(404)
+                    .body(new ErrorResponse("Todo not found", "Todo with the specified ID does not exist"));
         }
     }
 
