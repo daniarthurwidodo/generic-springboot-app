@@ -1,43 +1,56 @@
 # Enterprise Spring Boot 3 Backend Boilerplate
 
-A reusable, enterprise-grade backend template built with **Spring Boot 3** and **Java 21**, following Clean Architecture principles. Supports modular monolith and microservices transition.
+A reusable, enterprise-grade backend template built with **Spring Boot 3.2.3** and **Java 21**, following Clean Architecture principles. Designed for modular monolith architecture with microservices transition support.
 
 ## Features
 
+### Core Functionality
+- Todo Management API with CRUD operations
+- Health check and monitoring endpoints
+- Spring AI MCP Server integration for AI assistant tools
+- OpenAPI 3.0 specification with Swagger UI
+
 ### Authentication & Security
-- JWT Authentication with refresh tokens
-- OAuth2 support (Google, GitHub)
-- Role-Based Access Control (RBAC)
-- Public endpoint support
-- OWASP-compliant security
+- Spring Security configuration
+- JWT Authentication support (ready for implementation)
+- OAuth2 client support (ready for implementation)
+- Role-Based Access Control (RBAC) foundation
+- OWASP-compliant security practices
 
 ### Database & Storage
-- **PostgreSQL** - Primary RDBMS
-- **MongoDB** - Document database
-- **Flyway** - Database migrations
+- **PostgreSQL** - Primary RDBMS with JPA/Hibernate
+- **MongoDB** - Document database support
+- **Flyway** - Database migrations with version control
+- **ULID** - Universally Unique Lexicographically Sortable Identifiers
 
 ### Messaging & Caching
-- **Apache Kafka** - Event-driven architecture
+- **Apache Kafka** - Event-driven architecture support
 - **Redis** - Caching and distributed locking
 
 ### API Design
 - RESTful APIs with URI versioning (`/api/v1/...`)
-- Standardized response format
+- Standardized response format with timestamps
+- Comprehensive error handling
 - Target: <200ms average latency
 
 ## Tech Stack
 
-| Component | Technology |
-|-----------|------------|
-| Runtime | Java 21 |
-| Framework | Spring Boot 3 |
-| Security | Spring Security, JWT, OAuth2 |
-| Databases | PostgreSQL, MongoDB |
-| Cache | Redis |
-| Messaging | Apache Kafka |
-| Migrations | Flyway |
-| Testing | JUnit 5, Mockito, MockMvc |
-| Deployment | Docker, Docker Compose |
+| Component | Technology | Version |
+|-----------|------------|---------|
+| Runtime | Java | 21 |
+| Framework | Spring Boot | 3.2.3 |
+| Security | Spring Security, JWT (jjwt), OAuth2 | 0.12.5 |
+| Databases | PostgreSQL, MongoDB | Latest |
+| Cache | Redis | Latest |
+| Messaging | Apache Kafka | Latest |
+| Migrations | Flyway | 10.10.0 |
+| AI Integration | Spring AI MCP Server | 1.0.0-M6 |
+| API Docs | SpringDoc OpenAPI | 2.3.0 |
+| ID Generation | ULID Creator | 5.2.3 |
+| Testing | JUnit 5, Mockito, MockMvc, Spring Security Test | Latest |
+| Code Coverage | JaCoCo | 0.8.11 |
+| Build Tool | Maven | 3.x |
+| Deployment | Docker/Podman, Docker Compose | Latest |
 
 ## Architecture
 
@@ -146,16 +159,18 @@ The API is documented using OpenAPI 3.0 specification.
 
 ### Available Endpoints
 
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| GET | `/api/health` | Health check |
-| GET | `/hello` | Hello endpoint |
-| POST | `/api/v1/sql/todo` | Create todo |
-| GET | `/api/v1/sql/todo` | Get all todos |
-| GET | `/api/v1/sql/todo/{id}` | Get todo by ID |
-| PUT | `/api/v1/sql/todo/{id}` | Update todo |
-| PATCH | `/api/v1/sql/todo/{id}/toggle` | Toggle completion |
-| DELETE | `/api/v1/sql/todo/{id}` | Delete todo |
+| Method | Endpoint | Description | Status Code |
+|--------|----------|-------------|-------------|
+| GET | `/api/health` | Health check | 200 |
+| GET | `/hello` | Hello endpoint | 200 |
+| POST | `/api/v1/sql/todo` | Create todo | 201 |
+| GET | `/api/v1/sql/todo` | Get all todos | 200 |
+| GET | `/api/v1/sql/todo/{id}` | Get todo by ID (ULID) | 200, 404 |
+| PUT | `/api/v1/sql/todo/{id}` | Update todo | 200, 404 |
+| PATCH | `/api/v1/sql/todo/{id}/toggle` | Toggle completion status | 200, 404 |
+| DELETE | `/api/v1/sql/todo/{id}` | Delete todo | 204, 404 |
+
+Note: Todo IDs use ULID format (e.g., `01ARZ3NDEKTSV4RRFFQ69G5FAV`)
 
 ### Testing with Insomnia
 
@@ -170,38 +185,89 @@ The API is documented using OpenAPI 3.0 specification.
 # Run all tests
 ./mvnw test
 
-# Target: ≥80% code coverage
+# Run tests with coverage report
+./mvnw clean test jacoco:report
+
+# View coverage report
+open target/site/jacoco/index.html
 ```
+
+Test coverage target: ≥80% (excludes domain, dto, and config packages)
+
+Test naming convention: Use camelCase (e.g., `helloShouldReturnHelloWorld`)
 
 ## Configuration
 
-Key configuration areas:
-- `application.yml` - Application settings
-- `application-security.yml` - JWT/OAuth2 settings
-- `application-database.yml` - Database connections
-- `application-kafka.yml` - Kafka configuration
-- `application-redis.yml` - Redis configuration
+Key configuration files:
+- `application.yml` - Main application settings (database, Redis, Kafka, MCP server)
+- `application-docker.yml` - Docker-specific overrides
+- `logback-spring.xml` - Logging configuration
+
+Configuration includes:
+- PostgreSQL connection (localhost:5432)
+- MongoDB connection (localhost:27017)
+- Redis connection (localhost:6379)
+- Kafka bootstrap servers (localhost:9092)
+- Spring AI MCP Server settings
+- Actuator endpoints (health, info, metrics)
+- Graceful shutdown with 30s timeout
+
+## Spring AI MCP Server
+
+The application includes a Model Context Protocol (MCP) server for AI assistant integration:
+
+```yaml
+spring.ai.mcp.server:
+  name: enterprise-spring-boot-mcp-server
+  version: 1.0.0
+  type: SYNC
+  enabled: true
+  capabilities: tool, resource, prompt, completion
+```
+
+Create custom tools by annotating service methods with `@Tool`:
+
+```java
+@Tool(description = "Get a greeting message")
+public String greet(String name) {
+    return "Hello, " + name + "!";
+}
+```
 
 ## Kafka Topics
 
 Topic naming convention: `service-name.domain.event.v1`
 
-- Producer abstraction included
-- Consumer groups configured
-- Dead-letter topic support
+- Producer abstraction ready
+- Consumer groups configurable
+- Dead-letter topic support planned
 
 ## Redis Usage
 
 - Spring Cache abstraction
 - Configurable TTL
-- Distributed locking support
+- Distributed locking support ready
+
+## Project Structure
+
+```
+src/main/java/com/company/project/
+├── domain/              # Entities, business logic, repository interfaces
+├── application/         # Use cases, services (TodoService, McpToolsService)
+├── infrastructure/      # JPA, security, lifecycle, OpenAPI config
+└── presentation/        # REST controllers, DTOs, API responses
+```
 
 ## Future Enhancements
 
+- [ ] Complete JWT authentication implementation
+- [ ] OAuth2 social login integration
 - [ ] Kubernetes deployment manifests
-- [ ] Rate limiting
+- [ ] Rate limiting middleware
 - [ ] Multi-tenancy support
 - [ ] Centralized logging (ELK/Loki)
+- [ ] API versioning strategy
+- [ ] Comprehensive integration tests
 
 ## License
 
