@@ -1,0 +1,375 @@
+{
+  "$schema": "https://www.krakend.io/schema/v2.5/krakend.json",
+  "version": 3,
+  "name": "Enterprise API Gateway",
+  "timeout": "3000ms",
+  "cache_ttl": "300s",
+  "output_encoding": "json",
+  "port": 8000,
+  "extra_config": {
+    "telemetry/logging": {
+      "level": "INFO",
+      "prefix": "[KRAKEND]",
+      "syslog": false,
+      "stdout": true
+    },
+    "security/cors": {
+      "allow_origins": [
+        "http://localhost:3000",
+        "http://localhost:8080"
+      ],
+      "allow_methods": [
+        "GET",
+        "POST",
+        "PUT",
+        "PATCH",
+        "DELETE"
+      ],
+      "allow_headers": [
+        "Origin",
+        "Authorization",
+        "Content-Type"
+      ],
+      "expose_headers": [
+        "Content-Length"
+      ],
+      "max_age": "12h",
+      "allow_credentials": true
+    }
+  },
+  "endpoints": [
+    {
+      "endpoint": "/api/health",
+      "method": "GET",
+      "output_encoding": "no-op",
+      "backend": [
+        {
+          "url_pattern": "/api/health",
+          "encoding": "no-op",
+          "method": "GET",
+          "host": [
+            "http://host.docker.internal:8080"
+          ]
+        }
+      ]
+    },
+    {
+      "endpoint": "/hello",
+      "method": "GET",
+      "output_encoding": "no-op",
+      "backend": [
+        {
+          "url_pattern": "/hello",
+          "encoding": "no-op",
+          "method": "GET",
+          "host": [
+            "http://host.docker.internal:8080"
+          ]
+        }
+      ]
+    },
+    {
+      "endpoint": "/actuator/{path}",
+      "method": "GET",
+      "output_encoding": "no-op",
+      "backend": [
+        {
+          "url_pattern": "/actuator/{path}",
+          "encoding": "no-op",
+          "method": "GET",
+          "host": [
+            "http://host.docker.internal:8080"
+          ]
+        }
+      ]
+    },
+    {
+      "endpoint": "/api/v1/sql/todo",
+      "method": "GET",
+      "output_encoding": "no-op",
+      "backend": [
+        {
+          "url_pattern": "/api/v1/sql/todo",
+          "encoding": "no-op",
+          "method": "GET",
+          "host": [
+            "http://host.docker.internal:8080"
+          ]
+        }
+      ]
+    },
+    {
+      "endpoint": "/api/v1/sql/todo/{id}",
+      "method": "GET",
+      "output_encoding": "no-op",
+      "backend": [
+        {
+          "url_pattern": "/api/v1/sql/todo/{id}",
+          "encoding": "no-op",
+          "method": "GET",
+          "host": [
+            "http://host.docker.internal:8080"
+          ]
+        }
+      ]
+    },
+    {
+      "endpoint": "/api/v1/sql/todo",
+      "method": "POST",
+      "output_encoding": "no-op",
+      "backend": [
+        {
+          "url_pattern": "/api/v1/sql/todo",
+          "encoding": "no-op",
+          "method": "POST",
+          "host": [
+            "http://host.docker.internal:8080"
+          ]
+        }
+      ]
+    },
+    {
+      "endpoint": "/api/v1/sql/todo/{id}",
+      "method": "PUT",
+      "output_encoding": "no-op",
+      "backend": [
+        {
+          "url_pattern": "/api/v1/sql/todo/{id}",
+          "encoding": "no-op",
+          "method": "PUT",
+          "host": [
+            "http://host.docker.internal:8080"
+          ]
+        }
+      ]
+    },
+    {
+      "endpoint": "/api/v1/sql/todo/{id}",
+      "method": "DELETE",
+      "output_encoding": "no-op",
+      "backend": [
+        {
+          "url_pattern": "/api/v1/sql/todo/{id}",
+          "encoding": "no-op",
+          "method": "DELETE",
+          "host": [
+            "http://host.docker.internal:8080"
+          ]
+        }
+      ]
+    },
+    {
+      "endpoint": "/api/v1/sql/todo/{id}/toggle",
+      "method": "PATCH",
+      "output_encoding": "no-op",
+      "backend": [
+        {
+          "url_pattern": "/api/v1/sql/todo/{id}/toggle",
+          "encoding": "no-op",
+          "method": "PATCH",
+          "host": [
+            "http://host.docker.internal:8080"
+          ]
+        }
+      ]
+    },
+    {
+      "endpoint": "/swagger-ui/{path}",
+      "method": "GET",
+      "output_encoding": "no-op",
+      "backend": [
+        {
+          "url_pattern": "/swagger-ui/{path}",
+          "encoding": "no-op",
+          "method": "GET",
+          "host": [
+            "http://host.docker.internal:8080"
+          ]
+        }
+      ]
+    },
+    {
+      "endpoint": "/v3/api-docs/{path}",
+      "method": "GET",
+      "output_encoding": "no-op",
+      "backend": [
+        {
+          "url_pattern": "/v3/api-docs/{path}",
+          "encoding": "no-op",
+          "method": "GET",
+          "host": [
+            "http://host.docker.internal:8080"
+          ]
+        }
+      ]
+    },
+    {
+      "endpoint": "/v3/api-docs",
+      "method": "GET",
+      "output_encoding": "no-op",
+      "backend": [
+        {
+          "url_pattern": "/v3/api-docs",
+          "encoding": "no-op",
+          "method": "GET",
+          "host": [
+            "http://host.docker.internal:8080"
+          ]
+        }
+      ]
+    },
+    {
+      "endpoint": "/swagger-resources/{path}",
+      "method": "GET",
+      "output_encoding": "no-op",
+      "backend": [
+        {
+          "url_pattern": "/swagger-resources/{path}",
+          "encoding": "no-op",
+          "method": "GET",
+          "host": [
+            "http://host.docker.internal:8080"
+          ]
+        }
+      ]
+    },
+    {
+      "endpoint": "/api/v1/todos",
+      "method": "GET",
+      "backend": [
+        {
+          "url_pattern": "/api/v1/sql/todo",
+          "method": "GET",
+          "host": [
+            "http://host.docker.internal:8080"
+          ]
+        }
+      ],
+      "extra_config": {
+        "auth/validator": {
+          "alg": "RS256",
+          "jwk_url": "http://keycloak:8080/realms/springboot-app/protocol/openid-connect/certs",
+          "cache": true,
+          "disable_jwk_security": true,
+          "roles_key": "realm_access.roles",
+          "roles": ["user"]
+        }
+      }
+    },
+    {
+      "endpoint": "/api/v1/todos/{id}",
+      "method": "GET",
+      "backend": [
+        {
+          "url_pattern": "/api/v1/sql/todo/{id}",
+          "method": "GET",
+          "host": [
+            "http://host.docker.internal:8080"
+          ]
+        }
+      ],
+      "extra_config": {
+        "auth/validator": {
+          "alg": "RS256",
+          "jwk_url": "http://keycloak:8080/realms/springboot-app/protocol/openid-connect/certs",
+          "cache": true,
+          "disable_jwk_security": true,
+          "roles_key": "realm_access.roles",
+          "roles": ["user"]
+        }
+      }
+    },
+    {
+      "endpoint": "/api/v1/todos",
+      "method": "POST",
+      "backend": [
+        {
+          "url_pattern": "/api/v1/sql/todo",
+          "method": "POST",
+          "host": [
+            "http://host.docker.internal:8080"
+          ]
+        }
+      ],
+      "extra_config": {
+        "auth/validator": {
+          "alg": "RS256",
+          "jwk_url": "http://keycloak:8080/realms/springboot-app/protocol/openid-connect/certs",
+          "cache": true,
+          "disable_jwk_security": true,
+          "roles_key": "realm_access.roles",
+          "roles": ["user"]
+        }
+      }
+    },
+    {
+      "endpoint": "/api/v1/todos/{id}",
+      "method": "PUT",
+      "backend": [
+        {
+          "url_pattern": "/api/v1/sql/todo/{id}",
+          "method": "PUT",
+          "host": [
+            "http://host.docker.internal:8080"
+          ]
+        }
+      ],
+      "extra_config": {
+        "auth/validator": {
+          "alg": "RS256",
+          "jwk_url": "http://keycloak:8080/realms/springboot-app/protocol/openid-connect/certs",
+          "cache": true,
+          "disable_jwk_security": true,
+          "roles_key": "realm_access.roles",
+          "roles": ["user"]
+        }
+      }
+    },
+    {
+      "endpoint": "/api/v1/todos/{id}/toggle",
+      "method": "PATCH",
+      "backend": [
+        {
+          "url_pattern": "/api/v1/sql/todo/{id}/toggle",
+          "method": "PATCH",
+          "host": [
+            "http://host.docker.internal:8080"
+          ]
+        }
+      ],
+      "extra_config": {
+        "auth/validator": {
+          "alg": "RS256",
+          "jwk_url": "http://keycloak:8080/realms/springboot-app/protocol/openid-connect/certs",
+          "cache": true,
+          "disable_jwk_security": true,
+          "roles_key": "realm_access.roles",
+          "roles": ["user"]
+        }
+      }
+    },
+    {
+      "endpoint": "/api/v1/todos/{id}",
+      "method": "DELETE",
+      "backend": [
+        {
+          "url_pattern": "/api/v1/sql/todo/{id}",
+          "method": "DELETE",
+          "host": [
+            "http://host.docker.internal:8080"
+          ]
+        }
+      ],
+      "extra_config": {
+        "auth/validator": {
+          "alg": "RS256",
+          "jwk_url": "http://keycloak:8080/realms/springboot-app/protocol/openid-connect/certs",
+          "cache": true,
+          "disable_jwk_security": true,
+          "roles_key": "realm_access.roles",
+          "roles": ["user"]
+        }
+      }
+    }
+  ]
+}

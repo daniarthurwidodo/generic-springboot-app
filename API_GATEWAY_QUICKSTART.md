@@ -1,0 +1,226 @@
+# API Gateway Quick Start Guide
+
+## Services Running
+
+All services are now running successfully:
+
+| Service | Port | URL | Status |
+|---------|------|-----|--------|
+| **KrakenD Gateway** | 8000 | http://localhost:8000 | ✅ Running |
+| **Keycloak** | 8180 | http://localhost:8180 | ✅ Running |
+| **Spring Boot App** | 8080 | http://localhost:8080 | Start manually |
+| PostgreSQL | 5432 | localhost:5432 | ✅ Running |
+| MongoDB | 27017 | localhost:27017 | ✅ Running |
+| Redis | 6379 | localhost:6379 | ✅ Running |
+| Kafka | 9092 | localhost:9092 | ✅ Running |
+
+## Quick Test
+
+### 1. Test KrakenD Health (No Auth Required)
+
+```bash
+curl http://localhost:8000/health
+```
+
+### 2. Start Your Spring Boot App
+
+```bash
+./mvnw spring-boot:run
+```
+
+### 3. Test Through Gateway (Will Fail - No Auth Yet)
+
+```bash
+curl http://localhost:8000/api/v1/todos
+# Expected: 401 Unauthorized (JWT validation enabled)
+```
+
+## Next Steps
+
+### Configure Keycloak (Required)
+
+Follow the detailed setup in `KEYCLOAK_SETUP.md`:
+
+1. **Access Keycloak Admin Console**: http://localhost:8180
+   - Username: `admin`
+   - Password: `admin`
+
+2. **Create Realm**: `springboot-app`
+
+3. **Configure Google OAuth**:
+   - Get credentials from [Google Cloud Console](https://console.cloud.google.com/apis/credentials)
+   - Update `.env` with your Google Client ID and Secret
+   - Add Google as Identity Provider in Keycloak
+
+4. **Create Client**: `springboot-backend`
+
+5. **Create Roles**: `user`, `admin`
+
+6. **Test Authentication**
+
+## Architecture Flow
+
+```
+┌─────────┐      ┌─────────┐      ┌──────────┐      ┌─────────────┐
+│ Client  │─────▶│ KrakenD │─────▶│ Keycloak │      │ Spring Boot │
+│         │      │  :8000  │      │  :8180   │      │    :8080    │
+└─────────┘      └─────────┘      └──────────┘      └─────────────┘
+                      │                  │                   │
+                      │                  │                   │
+                      └──────────────────┴───────────────────┘
+                         JWT Validation & Token Relay
+```
+
+### How It Works
+
+1. **User Login**: Client redirects to Keycloak for authentication
+2. **Google OAuth**: User can login with Google account
+3. **Token Issued**: Keycloak issues JWT access token
+4. **API Request**: Client sends request to KrakenD with JWT in Authorization header
+5. **JWT Validation**: KrakenD validates JWT signature and claims
+6. **Token Relay**: KrakenD forwards valid request to Spring Boot
+7. **Response**: Spring Boot processes request and returns response
+
+## KrakenD Configuration
+
+Current endpoints configured in `krakend/krakend.json`:
+
+- `GET /health` - Health check (no auth)
+- `GET /api/v1/todos` - List todos (requires JWT with 'user' role)
+- `GET /api/v1/todos/{id}` - Get todo (requires JWT)
+- `POST /api/v1/todos` - Create todo (requires JWT)
+- `PUT /api/v1/todos/{id}` - Update todo (requires JWT)
+- `PATCH /api/v1/todos/{id}/toggle` - Toggle todo (requires JWT)
+- `DELETE /api/v1/todos/{id}` - Delete todo (requires JWT)
+
+## Update Spring Boot to Validate JWT
+
+Add to `src/main/resources/application.yml`:
+
+```yaml
+spring:
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8180/realms/springboot-app
+          jwk-set-uri: http://localhost:8180/realms/springboot-app/protocol/openid-connect/certs
+```
+
+Update `SecurityConfig.java` to validate JWT tokens (see KEYCLOAK_SETUP.md for details).
+
+## Testing with JWT
+
+### Get Access Token
+
+```bash
+# Using password grant (for testing)
+curl -X POST 'http://localhost:8180/realms/springboot-app/protocol/openid-connect/token' \
+  -H 'Content-Type: application/x-www-form-urlencoded' \
+  -d 'client_id=springboot-backend' \
+  -d 'client_secret=YOUR_CLIENT_SECRET' \
+  -d 'grant_type=password' \
+  -d 'username=testuser' \
+  -d 'password=password' | jq -r '.access_token'
+```
+
+### Use Token with KrakenD
+
+```bash
+TOKEN="your-access-token-here"
+
+# List todos
+curl -H "Authorization: Bearer $TOKEN" \
+  http://localhost:8000/api/v1/todos
+
+# Create todo
+curl -X POST \
+  -H "Authorization: Bearer $TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{"title":"Test Todo","description":"From KrakenD"}' \
+  http://localhost:8000/api/v1/todos
+```
+
+## Troubleshooting
+
+### KrakenD Returns 401
+
+- Check JWT token is valid and not expired
+- Verify realm name is `springboot-app` in Keycloak
+- Check user has `user` role assigned
+- Verify JWK URL in krakend.json matches Keycloak realm
+
+### Keycloak Not Accessible
+
+```bash
+# Check Keycloak logs
+podman compose logs keycloak
+
+# Restart Keycloak
+podman compose restart keycloak
+```
+
+### KrakenD Configuration Error
+
+```bash
+# Validate configuration
+podman compose exec krakend krakend check -c /etc/krakend/krakend.json
+
+# View logs
+podman compose logs krakend
+```
+
+### Spring Boot Can't Validate JWT
+
+- Verify `issuer-uri` in application.yml
+- Check Spring Boot can reach Keycloak (network connectivity)
+- Ensure OAuth2 Resource Server dependency is in pom.xml
+
+## Useful Commands
+
+```bash
+# View all service logs
+podman compose logs -f
+
+# Restart specific service
+podman compose restart keycloak
+
+# Stop all services
+podman compose down
+
+# Stop and remove volumes (fresh start)
+podman compose down -v
+
+# Check service status
+podman compose ps
+```
+
+## Security Notes
+
+⚠️ **Development Mode Only**
+
+Current configuration is for development:
+- Default passwords (change in production)
+- HTTP only (use HTTPS in production)
+- Permissive CORS (restrict in production)
+- JWT validation with `disable_jwk_security: true` (remove in production)
+
+## Production Checklist
+
+- [ ] Change all default passwords
+- [ ] Enable HTTPS/TLS
+- [ ] Configure proper CORS origins
+- [ ] Set secure JWT validation
+- [ ] Enable rate limiting in KrakenD
+- [ ] Configure token expiration policies
+- [ ] Set up monitoring and logging
+- [ ] Use secrets management (Vault, AWS Secrets Manager)
+- [ ] Configure production database
+- [ ] Set up backup and disaster recovery
+
+## Additional Resources
+
+- [KrakenD Documentation](https://www.krakend.io/docs/)
+- [Keycloak Documentation](https://www.keycloak.org/documentation)
+- [Spring Security OAuth2 Resource Server](https://docs.spring.io/spring-security/reference/servlet/oauth2/resource-server/)
+- Full setup guide: `KEYCLOAK_SETUP.md`
