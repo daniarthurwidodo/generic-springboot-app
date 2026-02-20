@@ -6,8 +6,6 @@ import com.company.project.dto.TodoRequest;
 import com.company.project.dto.TodoResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -30,10 +28,7 @@ public class TodoController {
 
     @PostMapping
     @Operation(summary = "Create a new todo", description = "Creates a new todo item with the provided title and description")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = "Todo created successfully"),
-            @ApiResponse(responseCode = "400", description = "Invalid input - title is required")
-    })
+    @ApiResponses.TodoCreated
     public ResponseEntity<TodoResponse> createTodo(@Valid @RequestBody TodoRequest request) {
         log.info("Received request to create todo: {}", request.title());
         Todo todo = todoService.createTodo(request.title(), request.description());
@@ -48,7 +43,7 @@ public class TodoController {
 
     @GetMapping
     @Operation(summary = "Get all todos", description = "Retrieves a list of all todo items")
-    @ApiResponse(responseCode = "200", description = "Successfully retrieved list of todos")
+    @ApiResponses.TodoListRetrieved
     public ResponseEntity<List<TodoResponse>> getAllTodos() {
         log.debug("Received request to get all todos");
         List<Todo> todos = todoService.getAllTodos();
@@ -58,10 +53,7 @@ public class TodoController {
 
     @GetMapping("/{id}")
     @Operation(summary = "Get todo by ID", description = "Retrieves a specific todo item by its ID")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Todo found"),
-            @ApiResponse(responseCode = "404", description = "Todo not found")
-    })
+    @ApiResponses.TodoFound
     public ResponseEntity<TodoResponse> getTodoById(
             @Parameter(description = "The unique ID of the todo") @PathVariable Long id) {
         log.debug("Received request to get todo by id: {}", id);
@@ -72,11 +64,7 @@ public class TodoController {
 
     @PutMapping("/{id}")
     @Operation(summary = "Update a todo", description = "Updates an existing todo item with new title and description")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Todo updated successfully"),
-            @ApiResponse(responseCode = "400", description = "Invalid input"),
-            @ApiResponse(responseCode = "404", description = "Todo not found")
-    })
+    @ApiResponses.TodoUpdated
     public ResponseEntity<TodoResponse> updateTodo(
             @Parameter(description = "The unique ID of the todo") @PathVariable Long id,
             @Valid @RequestBody TodoRequest request) {
@@ -92,10 +80,7 @@ public class TodoController {
 
     @PatchMapping("/{id}/toggle")
     @Operation(summary = "Toggle todo completion", description = "Toggles the completion status of a todo item")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Todo completion status toggled"),
-            @ApiResponse(responseCode = "404", description = "Todo not found")
-    })
+    @ApiResponses.TodoFound
     public ResponseEntity<TodoResponse> toggleTodoCompletion(
             @Parameter(description = "The unique ID of the todo") @PathVariable Long id) {
         log.info("Received request to toggle todo completion with id: {}", id);
@@ -110,10 +95,7 @@ public class TodoController {
 
     @DeleteMapping("/{id}")
     @Operation(summary = "Delete a todo", description = "Deletes a todo item by its ID")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "204", description = "Todo deleted successfully"),
-            @ApiResponse(responseCode = "404", description = "Todo not found")
-    })
+    @ApiResponses.TodoDeleted
     public ResponseEntity<Void> deleteTodo(
             @Parameter(description = "The unique ID of the todo") @PathVariable Long id) {
         log.info("Received request to delete todo with id: {}", id);
