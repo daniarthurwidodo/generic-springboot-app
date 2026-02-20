@@ -17,10 +17,10 @@ public class SecurityConfig {
             .csrf(csrf -> csrf.disable())
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/api/health", "/actuator/**").permitAll()
+                .requestMatchers("/api/health", "/hello", "/actuator/**").permitAll()
                 .anyRequest().authenticated()
             );
-        
+
         return http.build();
     }
 }

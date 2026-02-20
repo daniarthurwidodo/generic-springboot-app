@@ -75,10 +75,59 @@ Topic Naming: service-name.domain.event.v1
 
 ## 8. Testing Strategy
 
--   JUnit 5
--   Mockito
--   MockMvc
--   ≥80% coverage target
+### 8.1 Framework & Tools
+- JUnit 5
+- Mockito
+- MockMvc
+- Spring Security Test (`@WithMockUser`)
+- ≥80% coverage target
+
+### 8.2 Test Method Naming
+- Use **camelCase** for test method names
+- Do **not** use snake_case
+- Preferred patterns:
+  - `<method>Should<expectedBehavior>` (e.g., `helloShouldReturnHelloWorld`)
+  - `should<expectedBehavior>` (e.g., `shouldReturnHelloWorldMessage`)
+
+### 8.3 Test Structure
+- Test happy path scenarios
+- Test error scenarios (4xx, 5xx responses)
+- Test response content-type headers
+- Test unsupported HTTP methods (405 Method Not Allowed)
+
+### 8.4 Web Layer Testing Pattern
+```java
+@WebMvcTest(HelloController.class)
+class HelloControllerTest {
+
+    @Autowired
+    private MockMvc mockMvc;
+
+    @MockBean
+    private SecurityFilterChain securityFilterChain;
+
+    @Test
+    @WithMockUser
+    void helloShouldReturnHelloWorld() throws Exception {
+        mockMvc.perform(get("/hello"))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+            .andExpect(jsonPath("$.message").value("Hello World"));
+    }
+
+    @Test
+    @WithMockUser
+    void postShouldReturnMethodNotAllowed() throws Exception {
+        mockMvc.perform(post("/hello"))
+            .andExpect(status().isMethodNotAllowed());
+    }
+}
+```
+
+### 8.5 Security Testing
+- Use `@WithMockUser` for authenticated requests
+- Mock `SecurityFilterChain` to disable CSRF in tests
+- Test both authorized and unauthorized scenarios
 
 ------------------------------------------------------------------------
 
