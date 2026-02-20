@@ -220,3 +220,11 @@
 2026-02-20 20:30:50.348 [http-nio-8080-exec-8] DEBUG c.c.p.presentation.TodoController - Received request to get all todos
 2026-02-20 20:30:50.350 [http-nio-8080-exec-8] DEBUG c.c.project.application.TodoService - Fetching all todos
 2026-02-20 20:30:50.354 [http-nio-8080-exec-8] DEBUG c.c.p.presentation.TodoController - Returning 3 todos
+2026-02-20 20:39:16.473 [SpringApplicationShutdownHook] INFO  c.c.p.i.ApplicationLifecycleConfig - Graceful shutdown initiated...
+2026-02-20 20:39:16.476 [SpringApplicationShutdownHook] INFO  c.c.p.i.ApplicationLifecycleConfig - Closing database connections, cache, and other resources...
+2026-02-20 20:39:16.491 [SpringApplicationShutdownHook] INFO  o.s.b.w.e.tomcat.GracefulShutdown - Commencing graceful shutdown. Waiting for active requests to complete
+2026-02-20 20:39:20.509 [tomcat-shutdown] INFO  o.s.b.w.e.tomcat.GracefulShutdown - Graceful shutdown complete
+2026-02-20 20:39:20.551 [SpringApplicationShutdownHook] INFO  c.c.p.i.ApplicationLifecycleConfig - Application bean destruction completed
+2026-02-20 20:39:20.551 [SpringApplicationShutdownHook] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-02-20 20:39:20.555 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2026-02-20 20:39:20.557 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
