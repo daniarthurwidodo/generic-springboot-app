@@ -116,6 +116,54 @@ All endpoints return standardized responses:
 }
 ```
 
+## API Documentation
+
+### API Specification
+
+The API is documented using OpenAPI 3.0 specification.
+
+**Files:**
+- **OpenAPI Spec (YAML)**: [`src/main/resources/api/openapi-spec.yaml`](src/main/resources/api/openapi-spec.yaml)
+- **Insomnia Collection (JSON)**: [`insomnia-collection.json`](insomnia-collection.json)
+
+### Import into Insomnia
+
+**Recommended: Import JSON Collection**
+1. Open Insomnia
+2. Click **Import Data** (or `Ctrl/Cmd + I`)
+3. Select **OpenAPI 3.0** or **Swagger 2.0** format
+4. Choose `insomnia-collection.json`
+5. Click **Import**
+
+**Alternative: Import YAML Spec from Resources**
+1. Open Insomnia
+2. Click **Import Data**
+3. Select **OpenAPI 3.0** format
+4. Choose `src/main/resources/api/openapi-spec.yaml`
+5. Click **Import**
+
+> **Note:** Import the JSON file for best results. The YAML file in `src/main/resources/` is meant for Spring Doc integration.
+
+### Available Endpoints
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | `/api/health` | Health check |
+| GET | `/hello` | Hello endpoint |
+| POST | `/api/v1/sql/todo` | Create todo |
+| GET | `/api/v1/sql/todo` | Get all todos |
+| GET | `/api/v1/sql/todo/{id}` | Get todo by ID |
+| PUT | `/api/v1/sql/todo/{id}` | Update todo |
+| PATCH | `/api/v1/sql/todo/{id}/toggle` | Toggle completion |
+| DELETE | `/api/v1/sql/todo/{id}` | Delete todo |
+
+### Testing with Insomnia
+
+1. Import the collection (see above)
+2. Select the **Development** environment
+3. Start the application: `./mvnw spring-boot:run`
+4. Test endpoints directly from Insomnia
+
 ## Testing
 
 ```bash

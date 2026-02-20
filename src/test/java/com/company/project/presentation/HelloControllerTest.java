@@ -1,5 +1,6 @@
 package com.company.project.presentation;
 
+import com.company.project.application.McpToolsService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -25,6 +26,9 @@ class HelloControllerTest {
 
     @MockBean
     private SecurityFilterChain securityFilterChain;
+
+    @MockBean
+    private McpToolsService mcpToolsService;
 
     @Test
     @WithMockUser
