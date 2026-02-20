@@ -48,7 +48,7 @@ class TodoControllerTest {
         TodoRequest request = new TodoRequest("Test Todo", "Test Description");
         Todo savedTodo = new Todo("01HQZX3Y9F8G7JTRQWKNXVP123", "Test Todo", "Test Description", false, LocalDateTime.now(), LocalDateTime.now());
 
-        given(todoService.createTodo(anyString(), anyString())).willReturn(savedTodo);
+        given(todoService.create(any(Todo.class))).willReturn(savedTodo);
 
         mockMvc.perform(post("/api/v1/sql/todo")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -79,7 +79,7 @@ class TodoControllerTest {
                 new Todo("01HQZX3Y9F8G7JTRQWKNXVP456", "Todo 2", "Description 2", true, LocalDateTime.now(), LocalDateTime.now())
         );
 
-        given(todoService.getAllTodos()).willReturn(todos);
+        given(todoService.findAll()).willReturn(todos);
 
         mockMvc.perform(get("/api/v1/sql/todo"))
                 .andExpect(status().isOk())
@@ -95,7 +95,7 @@ class TodoControllerTest {
     void getTodoByIdShouldReturnTodo() throws Exception {
         Todo todo = new Todo("01HQZX3Y9F8G7JTRQWKNXVP123", "Test Todo", "Test Description", false, LocalDateTime.now(), LocalDateTime.now());
 
-        given(todoService.getTodoById("01HQZX3Y9F8G7JTRQWKNXVP123")).willReturn(Optional.of(todo));
+        given(todoService.findById("01HQZX3Y9F8G7JTRQWKNXVP123")).willReturn(Optional.of(todo));
 
         mockMvc.perform(get("/api/v1/sql/todo/01HQZX3Y9F8G7JTRQWKNXVP123"))
                 .andExpect(status().isOk())
@@ -106,7 +106,7 @@ class TodoControllerTest {
     @Test
     @WithMockUser
     void getTodoByIdNotFoundShouldReturnNotFound() throws Exception {
-        given(todoService.getTodoById("01HQZX3Y9F8G7JTRQWKNXVP999")).willReturn(Optional.empty());
+        given(todoService.findById("01HQZX3Y9F8G7JTRQWKNXVP999")).willReturn(Optional.empty());
 
         mockMvc.perform(get("/api/v1/sql/todo/01HQZX3Y9F8G7JTRQWKNXVP999"))
                 .andExpect(status().isNotFound());
@@ -118,7 +118,7 @@ class TodoControllerTest {
         TodoRequest request = new TodoRequest("Updated Todo", "Updated Description");
         Todo updatedTodo = new Todo("01HQZX3Y9F8G7JTRQWKNXVP123", "Updated Todo", "Updated Description", false, LocalDateTime.now(), LocalDateTime.now());
 
-        given(todoService.updateTodo(eq("01HQZX3Y9F8G7JTRQWKNXVP123"), anyString(), anyString())).willReturn(updatedTodo);
+        given(todoService.update(eq("01HQZX3Y9F8G7JTRQWKNXVP123"), any(Todo.class))).willReturn(updatedTodo);
 
         mockMvc.perform(put("/api/v1/sql/todo/01HQZX3Y9F8G7JTRQWKNXVP123")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -133,7 +133,7 @@ class TodoControllerTest {
     void updateTodoNotFoundShouldReturnNotFound() throws Exception {
         TodoRequest request = new TodoRequest("Updated Todo", "Updated Description");
 
-        given(todoService.updateTodo(eq("01HQZX3Y9F8G7JTRQWKNXVP999"), anyString(), anyString()))
+        given(todoService.update(eq("01HQZX3Y9F8G7JTRQWKNXVP999"), any(Todo.class)))
                 .willThrow(new IllegalArgumentException("Todo not found with id: 01HQZX3Y9F8G7JTRQWKNXVP999"));
 
         mockMvc.perform(put("/api/v1/sql/todo/01HQZX3Y9F8G7JTRQWKNXVP999")
@@ -147,7 +147,7 @@ class TodoControllerTest {
     void toggleTodoCompletionShouldReturnToggledTodo() throws Exception {
         Todo toggledTodo = new Todo("01HQZX3Y9F8G7JTRQWKNXVP123", "Test Todo", "Test Description", true, LocalDateTime.now(), LocalDateTime.now());
 
-        given(todoService.toggleTodoCompletion("01HQZX3Y9F8G7JTRQWKNXVP123")).willReturn(toggledTodo);
+        given(todoService.toggleCompletion("01HQZX3Y9F8G7JTRQWKNXVP123")).willReturn(toggledTodo);
 
         mockMvc.perform(patch("/api/v1/sql/todo/01HQZX3Y9F8G7JTRQWKNXVP123/toggle"))
                 .andExpect(status().isOk())
@@ -158,7 +158,7 @@ class TodoControllerTest {
     @Test
     @WithMockUser
     void toggleTodoCompletionNotFoundShouldReturnNotFound() throws Exception {
-        given(todoService.toggleTodoCompletion("01HQZX3Y9F8G7JTRQWKNXVP999"))
+        given(todoService.toggleCompletion("01HQZX3Y9F8G7JTRQWKNXVP999"))
                 .willThrow(new IllegalArgumentException("Todo not found with id: 01HQZX3Y9F8G7JTRQWKNXVP999"));
 
         mockMvc.perform(patch("/api/v1/sql/todo/01HQZX3Y9F8G7JTRQWKNXVP999/toggle"))
@@ -176,7 +176,7 @@ class TodoControllerTest {
     @WithMockUser
     void deleteTodoNotFoundShouldReturnNotFound() throws Exception {
         doThrow(new IllegalArgumentException("Todo not found with id: 01HQZX3Y9F8G7JTRQWKNXVP999"))
-                .when(todoService).deleteTodo("01HQZX3Y9F8G7JTRQWKNXVP999");
+                .when(todoService).delete("01HQZX3Y9F8G7JTRQWKNXVP999");
 
         mockMvc.perform(delete("/api/v1/sql/todo/01HQZX3Y9F8G7JTRQWKNXVP999"))
                 .andExpect(status().isNotFound());
