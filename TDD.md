@@ -131,7 +131,54 @@ class HelloControllerTest {
 
 ------------------------------------------------------------------------
 
-## 9. Docker Compose Services
+## 9. MCP Server (Model Context Protocol)
+
+### 9.1 Overview
+The application includes a Spring AI MCP Server for AI assistant integration, providing tools that can be invoked by LLM clients.
+
+### 9.2 Configuration
+```yaml
+spring:
+  ai:
+    mcp:
+      server:
+        name: enterprise-spring-boot-mcp-server
+        version: 1.0.0
+        type: SYNC
+        enabled: true
+        stdio: false  # Set true for CLI/desktop tools
+        capabilities:
+          tool: true
+          resource: true
+          prompt: true
+          completion: true
+```
+
+### 9.3 Creating Tools
+```java
+@Service
+public class McpToolsService {
+
+    @Tool(description = "Get a greeting message for the given name")
+    public String greet(String name) {
+        return "Hello, " + (name != null && !name.isBlank() ? name : "World") + "!";
+    }
+}
+```
+
+### 9.4 Registering Tools
+```java
+@Bean
+public ToolCallbackProvider toolCallbackProvider(McpToolsService mcpToolsService) {
+    return MethodToolCallbackProvider.builder()
+            .toolObjects(mcpToolsService)
+            .build();
+}
+```
+
+------------------------------------------------------------------------
+
+## 10. Docker Compose Services
 
 -   app
 -   postgres

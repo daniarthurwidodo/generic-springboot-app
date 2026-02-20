@@ -2,6 +2,22 @@ spring:
   application:
     name: enterprise-spring-boot-boilerplate
 
+  # Spring AI MCP Server Configuration
+  ai:
+    mcp:
+      server:
+        name: enterprise-spring-boot-mcp-server
+        version: 1.0.0
+        type: SYNC
+        instructions: "This server provides enterprise application tools including greetings and health status"
+        enabled: true
+        stdio: false
+        capabilities:
+          tool: true
+          resource: true
+          prompt: true
+          completion: true
+
   # PostgreSQL Configuration
   datasource:
     url: jdbc:postgresql://localhost:5432/appdb

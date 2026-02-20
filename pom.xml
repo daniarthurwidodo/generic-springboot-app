@@ -23,6 +23,7 @@
         <jjwt.version>0.12.5</jjwt.version>
         <flyway.version>10.10.0</flyway.version>
         <flapdoodle.version>4.17.0</flapdoodle.version>
+        <spring-ai.version>1.0.0-M6</spring-ai.version>
     </properties>
 
     <dependencies>
@@ -148,7 +149,25 @@
             <version>${flapdoodle.version}</version>
             <scope>test</scope>
         </dependency>
+
+        <!-- Spring AI MCP Server -->
+        <dependency>
+            <groupId>org.springframework.ai</groupId>
+            <artifactId>spring-ai-mcp-server-spring-boot-starter</artifactId>
+            <version>${spring-ai.version}</version>
+        </dependency>
     </dependencies>
+
+    <repositories>
+        <repository>
+            <id>spring-milestones</id>
+            <name>Spring Milestones</name>
+            <url>https://repo.spring.io/milestone</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+    </repositories>
 
     <build>
         <plugins>
