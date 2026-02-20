@@ -134,3 +134,89 @@
 2026-02-20 20:20:23.135 [http-nio-8080-exec-7] DEBUG c.c.p.presentation.TodoController - Received request to get all todos
 2026-02-20 20:20:23.138 [http-nio-8080-exec-7] DEBUG c.c.project.application.TodoService - Fetching all todos
 2026-02-20 20:20:23.215 [http-nio-8080-exec-7] DEBUG c.c.p.presentation.TodoController - Returning 2 todos
+2026-02-20 20:20:53.379 [http-nio-8080-exec-9] DEBUG c.c.p.presentation.TodoController - Received request to get all todos
+2026-02-20 20:20:53.381 [http-nio-8080-exec-9] DEBUG c.c.project.application.TodoService - Fetching all todos
+2026-02-20 20:20:53.384 [http-nio-8080-exec-9] DEBUG c.c.p.presentation.TodoController - Returning 2 todos
+2026-02-20 20:21:01.882 [http-nio-8080-exec-1] DEBUG c.c.p.presentation.TodoController - Received request to get todo by id: 1
+2026-02-20 20:21:01.884 [http-nio-8080-exec-1] DEBUG c.c.project.application.TodoService - Fetching todo by id: 1
+2026-02-20 20:29:34.668 [background-preinit] INFO  o.h.validator.internal.util.Version - HV000001: Hibernate Validator 8.0.1.Final
+2026-02-20 20:29:34.689 [main] INFO  com.company.project.Application - Starting Application using Java 21.0.8 with PID 87593 (/Users/dani.widodo/Documents/repos/generic-springboot-app/target/classes started by dani.widodo in /Users/dani.widodo/Documents/repos/generic-springboot-app)
+2026-02-20 20:29:34.689 [main] DEBUG com.company.project.Application - Running with Spring Boot v3.2.3, Spring v6.1.4
+2026-02-20 20:29:34.689 [main] INFO  com.company.project.Application - No active profile set, falling back to 1 default profile: "default"
+2026-02-20 20:29:35.257 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Multiple Spring Data modules found, entering strict repository configuration mode
+2026-02-20 20:29:35.258 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-02-20 20:29:35.344 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 81 ms. Found 1 JPA repository interface.
+2026-02-20 20:29:35.356 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Multiple Spring Data modules found, entering strict repository configuration mode
+2026-02-20 20:29:35.356 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data MongoDB repositories in DEFAULT mode.
+2026-02-20 20:29:35.359 [main] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport - Spring Data MongoDB - Could not safely identify store assignment for repository candidate interface com.company.project.infrastructure.TodoJpaRepository; If you want this repository to be a MongoDB repository, consider annotating your entities with one of these annotations: org.springframework.data.mongodb.core.mapping.Document (preferred), or consider extending one of the following types with your repository: org.springframework.data.mongodb.repository.MongoRepository
+2026-02-20 20:29:35.359 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 3 ms. Found 0 MongoDB repository interfaces.
+2026-02-20 20:29:35.366 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Multiple Spring Data modules found, entering strict repository configuration mode
+2026-02-20 20:29:35.366 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2026-02-20 20:29:35.372 [main] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport - Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.company.project.infrastructure.TodoJpaRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2026-02-20 20:29:35.373 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 2 ms. Found 0 Redis repository interfaces.
+2026-02-20 20:29:35.763 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
+2026-02-20 20:29:35.768 [main] INFO  o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
+2026-02-20 20:29:35.769 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2026-02-20 20:29:35.769 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.19]
+2026-02-20 20:29:35.798 [main] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2026-02-20 20:29:35.798 [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 1090 ms
+2026-02-20 20:29:36.014 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2026-02-20 20:29:36.106 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@53432aef
+2026-02-20 20:29:36.107 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2026-02-20 20:29:36.123 [main] INFO  org.flywaydb.core.FlywayExecutor - Database: jdbc:postgresql://localhost:5432/appdb (PostgreSQL 15.16)
+2026-02-20 20:29:36.150 [main] INFO  o.f.core.internal.command.DbValidate - Successfully validated 2 migrations (execution time 00:00.015s)
+2026-02-20 20:29:36.173 [main] INFO  o.f.core.internal.command.DbMigrate - Current version of schema "public": 1
+2026-02-20 20:29:36.182 [main] INFO  o.f.core.internal.command.DbMigrate - Migrating schema "public" to version "2 - change todos id to ulid"
+2026-02-20 20:29:36.214 [main] INFO  o.f.core.internal.command.DbMigrate - Successfully applied 1 migration to schema "public", now at version v2 (execution time 00:00.021s)
+2026-02-20 20:29:36.266 [main] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-02-20 20:29:36.298 [main] INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 6.4.4.Final
+2026-02-20 20:29:36.317 [main] INFO  o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+2026-02-20 20:29:36.430 [main] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-02-20 20:29:36.457 [main] WARN  org.hibernate.orm.deprecation - HHH90000025: PostgreSQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2026-02-20 20:29:36.845 [main] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-02-20 20:29:36.866 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-02-20 20:29:37.101 [main] WARN  o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2026-02-20 20:29:37.361 [main] INFO  org.mongodb.driver.client - MongoClient with metadata {"driver": {"name": "mongo-java-driver|sync|spring-boot", "version": "4.11.1"}, "os": {"type": "Darwin", "name": "Mac OS X", "architecture": "aarch64", "version": "14.8.3"}, "platform": "Java/Homebrew/21.0.8"} created with settings MongoClientSettings{readPreference=primary, writeConcern=WriteConcern{w=null, wTimeout=null ms, journal=null}, retryWrites=true, retryReads=true, readConcern=ReadConcern{level=null}, credential=MongoCredential{mechanism=null, userName='appuser', source='admin', password=<hidden>, mechanismProperties=<hidden>}, transportSettings=null, streamFactoryFactory=null, commandListeners=[io.micrometer.core.instrument.binder.mongodb.MongoMetricsCommandListener@4f9e32f2], codecRegistry=ProvidersCodecRegistry{codecProviders=[ValueCodecProvider{}, BsonValueCodecProvider{}, DBRefCodecProvider{}, DBObjectCodecProvider{}, DocumentCodecProvider{}, CollectionCodecProvider{}, IterableCodecProvider{}, MapCodecProvider{}, GeoJsonCodecProvider{}, GridFSFileCodecProvider{}, Jsr310CodecProvider{}, JsonObjectCodecProvider{}, BsonCodecProvider{}, EnumCodecProvider{}, com.mongodb.client.model.mql.ExpressionCodecProvider@3c739a9b, com.mongodb.Jep395RecordCodecProvider@299022a9, com.mongodb.KotlinCodecProvider@7dfbdcfe]}, loggerSettings=LoggerSettings{maxDocumentLength=1000}, clusterSettings={hosts=[localhost:27017], srvServiceName=mongodb, mode=SINGLE, requiredClusterType=UNKNOWN, requiredReplicaSetName='null', serverSelector='null', clusterListeners='[]', serverSelectionTimeout='30000 ms', localThreshold='15 ms'}, socketSettings=SocketSettings{connectTimeoutMS=10000, readTimeoutMS=0, receiveBufferSize=0, proxySettings=ProxySettings{host=null, port=null, username=null, password=null}}, heartbeatSocketSettings=SocketSettings{connectTimeoutMS=10000, readTimeoutMS=10000, receiveBufferSize=0, proxySettings=ProxySettings{host=null, port=null, username=null, password=null}}, connectionPoolSettings=ConnectionPoolSettings{maxSize=100, minSize=0, maxWaitTimeMS=120000, maxConnectionLifeTimeMS=0, maxConnectionIdleTimeMS=0, maintenanceInitialDelayMS=0, maintenanceFrequencyMS=60000, connectionPoolListeners=[io.micrometer.core.instrument.binder.mongodb.MongoMetricsConnectionPoolListener@3d2a164e], maxConnecting=2}, serverSettings=ServerSettings{heartbeatFrequencyMS=10000, minHeartbeatFrequencyMS=500, serverListeners='[]', serverMonitorListeners='[]'}, sslSettings=SslSettings{enabled=false, invalidHostNameAllowed=false, context=null}, applicationName='null', compressorList=[], uuidRepresentation=JAVA_LEGACY, serverApi=null, autoEncryptionSettings=null, dnsClient=null, inetAddressResolver=null, contextProvider=null}
+2026-02-20 20:29:37.376 [cluster-ClusterId{value='699861c17dd99c320172eb32', description='null'}-localhost:27017] INFO  org.mongodb.driver.cluster - Monitor thread successfully connected to server with description ServerDescription{address=localhost:27017, type=STANDALONE, state=CONNECTED, ok=true, minWireVersion=0, maxWireVersion=21, maxDocumentSize=16777216, logicalSessionTimeoutMinutes=30, roundTripTimeNanos=15882542}
+2026-02-20 20:29:37.615 [main] INFO  o.s.b.a.e.web.EndpointLinksResolver - Exposing 3 endpoint(s) beneath base path '/actuator'
+2026-02-20 20:29:37.661 [main] INFO  o.s.s.web.DefaultSecurityFilterChain - Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@5cfb4b71, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@b517988, org.springframework.security.web.context.SecurityContextHolderFilter@7cb8109, org.springframework.security.web.header.HeaderWriterFilter@13ecedf6, org.springframework.web.filter.CorsFilter@7cb7ca06, org.springframework.security.web.authentication.logout.LogoutFilter@b6db92b, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@4b7272d6, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@749330a8, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@660b8572, org.springframework.security.web.session.SessionManagementFilter@5513745d, org.springframework.security.web.access.ExceptionTranslationFilter@10cae98c, org.springframework.security.web.access.intercept.AuthorizationFilter@4d13b552]
+2026-02-20 20:29:37.863 [main] INFO  o.s.a.a.m.s.MpcServerAutoConfiguration - Registered tools2 notification: true
+2026-02-20 20:29:38.129 [main] INFO  o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8080"]
+2026-02-20 20:29:38.136 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 8080 (http) with context path ''
+2026-02-20 20:29:38.146 [main] INFO  c.c.p.i.ApplicationLifecycleConfig - Application context refreshed successfully
+2026-02-20 20:29:38.146 [main] INFO  com.company.project.Application - Started Application in 3.703 seconds (process running for 3.896)
+2026-02-20 20:29:38.181 [main] INFO  c.c.p.i.ApplicationLifecycleConfig - Application is ready to serve requests
+2026-02-20 20:29:38.181 [main] INFO  com.company.project.Application - Application started successfully
+2026-02-20 20:29:49.803 [http-nio-8080-exec-1] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-02-20 20:29:49.803 [http-nio-8080-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2026-02-20 20:29:49.805 [http-nio-8080-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Completed initialization in 2 ms
+2026-02-20 20:29:49.835 [http-nio-8080-exec-1] DEBUG c.c.p.presentation.TodoController - Received request to get all todos
+2026-02-20 20:29:49.843 [http-nio-8080-exec-1] DEBUG c.c.project.application.TodoService - Fetching all todos
+2026-02-20 20:29:49.919 [http-nio-8080-exec-1] DEBUG c.c.p.presentation.TodoController - Returning 0 todos
+2026-02-20 20:29:51.590 [http-nio-8080-exec-2] DEBUG c.c.p.presentation.TodoController - Received request to get all todos
+2026-02-20 20:29:51.594 [http-nio-8080-exec-2] DEBUG c.c.project.application.TodoService - Fetching all todos
+2026-02-20 20:29:51.598 [http-nio-8080-exec-2] DEBUG c.c.p.presentation.TodoController - Returning 0 todos
+2026-02-20 20:29:53.547 [http-nio-8080-exec-3] DEBUG c.c.p.presentation.TodoController - Received request to get all todos
+2026-02-20 20:29:53.548 [http-nio-8080-exec-3] DEBUG c.c.project.application.TodoService - Fetching all todos
+2026-02-20 20:29:53.550 [http-nio-8080-exec-3] DEBUG c.c.p.presentation.TodoController - Returning 0 todos
+2026-02-20 20:30:04.316 [http-nio-8080-exec-3] INFO  o.s.api.AbstractOpenApiResource - Init duration for springdoc-openapi is: 122 ms
+2026-02-20 20:30:20.454 [http-nio-8080-exec-4] DEBUG c.c.p.presentation.TodoController - Received request to get todo by id: 1
+2026-02-20 20:30:20.456 [http-nio-8080-exec-4] DEBUG c.c.project.application.TodoService - Fetching todo by id: 1
+2026-02-20 20:30:33.071 [http-nio-8080-exec-5] INFO  c.c.p.presentation.TodoController - Received request to create todo: string
+2026-02-20 20:30:33.074 [http-nio-8080-exec-5] INFO  c.c.project.application.TodoService - Creating new todo with title: string
+2026-02-20 20:30:33.091 [http-nio-8080-exec-5] INFO  c.c.project.application.TodoService - Created todo with id: 01KHXKXD7NABK5HHV2XG89K700
+2026-02-20 20:30:33.108 [http-nio-8080-exec-5] INFO  c.c.p.presentation.TodoController - Created todo at location: http://localhost:8080/api/v1/sql/todo/01KHXKXD7NABK5HHV2XG89K700
+2026-02-20 20:30:37.316 [http-nio-8080-exec-7] DEBUG c.c.p.presentation.TodoController - Received request to get all todos
+2026-02-20 20:30:37.319 [http-nio-8080-exec-7] DEBUG c.c.project.application.TodoService - Fetching all todos
+2026-02-20 20:30:37.333 [http-nio-8080-exec-7] DEBUG c.c.p.presentation.TodoController - Returning 1 todos
+2026-02-20 20:30:45.655 [http-nio-8080-exec-9] INFO  c.c.p.presentation.TodoController - Received request to create todo: string
+2026-02-20 20:30:45.658 [http-nio-8080-exec-9] INFO  c.c.project.application.TodoService - Creating new todo with title: string
+2026-02-20 20:30:45.663 [http-nio-8080-exec-9] INFO  c.c.project.application.TodoService - Created todo with id: 01KHXKXSGTW3AZX8KK8Y7F1TQ6
+2026-02-20 20:30:45.677 [http-nio-8080-exec-9] INFO  c.c.p.presentation.TodoController - Created todo at location: http://localhost:8080/api/v1/sql/todo/01KHXKXSGTW3AZX8KK8Y7F1TQ6
+2026-02-20 20:30:46.228 [http-nio-8080-exec-10] INFO  c.c.p.presentation.TodoController - Received request to create todo: string
+2026-02-20 20:30:46.229 [http-nio-8080-exec-10] INFO  c.c.project.application.TodoService - Creating new todo with title: string
+2026-02-20 20:30:46.231 [http-nio-8080-exec-10] INFO  c.c.project.application.TodoService - Created todo with id: 01KHXKXT2P6EGFBK8DRBWBWKGC
+2026-02-20 20:30:46.235 [http-nio-8080-exec-10] INFO  c.c.p.presentation.TodoController - Created todo at location: http://localhost:8080/api/v1/sql/todo/01KHXKXT2P6EGFBK8DRBWBWKGC
+2026-02-20 20:30:50.348 [http-nio-8080-exec-8] DEBUG c.c.p.presentation.TodoController - Received request to get all todos
+2026-02-20 20:30:50.350 [http-nio-8080-exec-8] DEBUG c.c.project.application.TodoService - Fetching all todos
+2026-02-20 20:30:50.354 [http-nio-8080-exec-8] DEBUG c.c.p.presentation.TodoController - Returning 3 todos

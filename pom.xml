@@ -24,6 +24,7 @@
         <flyway.version>10.10.0</flyway.version>
         <flapdoodle.version>4.17.0</flapdoodle.version>
         <spring-ai.version>1.0.0-M6</spring-ai.version>
+        <ulid.version>5.2.3</ulid.version>
     </properties>
 
     <dependencies>
@@ -122,6 +123,13 @@
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <optional>true</optional>
+        </dependency>
+
+        <!-- ULID Creator -->
+        <dependency>
+            <groupId>com.github.f4b6a3</groupId>
+            <artifactId>ulid-creator</artifactId>
+            <version>${ulid.version}</version>
         </dependency>
 
         <!-- Testing -->

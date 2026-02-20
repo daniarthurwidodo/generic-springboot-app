@@ -27,7 +27,7 @@ public class TodoService {
     }
 
     @Transactional(readOnly = true)
-    public Optional<Todo> getTodoById(Long id) {
+    public Optional<Todo> getTodoById(String id) {
         log.debug("Fetching todo by id: {}", id);
         return todoRepository.findById(id);
     }
@@ -38,7 +38,7 @@ public class TodoService {
         return todoRepository.findAll();
     }
 
-    public Todo updateTodo(Long id, String title, String description) {
+    public Todo updateTodo(String id, String title, String description) {
         log.info("Updating todo with id: {}", id);
         Todo existingTodo = todoRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Todo not found with id: " + id));
@@ -48,7 +48,7 @@ public class TodoService {
         return saved;
     }
 
-    public Todo toggleTodoCompletion(Long id) {
+    public Todo toggleTodoCompletion(String id) {
         log.info("Toggling completion for todo with id: {}", id);
         Todo existingTodo = todoRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Todo not found with id: " + id));
@@ -58,7 +58,7 @@ public class TodoService {
         return saved;
     }
 
-    public void deleteTodo(Long id) {
+    public void deleteTodo(String id) {
         log.info("Deleting todo with id: {}", id);
         if (!todoRepository.existsById(id)) {
             throw new IllegalArgumentException("Todo not found with id: " + id);

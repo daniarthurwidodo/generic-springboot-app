@@ -1,5 +1,6 @@
 package com.company.project.infrastructure;
 
+import com.github.f4b6a3.ulid.UlidCreator;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
@@ -8,8 +9,8 @@ import java.time.LocalDateTime;
 public class TodoJpaEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column(length = 26)
+    private String id;
 
     @Column(nullable = false, length = 255)
     private String title;
@@ -30,6 +31,7 @@ public class TodoJpaEntity {
     }
 
     public TodoJpaEntity(String title, String description) {
+        this.id = UlidCreator.getMonotonicUlid().toString();
         this.title = title;
         this.description = description;
         this.completed = false;
@@ -37,7 +39,7 @@ public class TodoJpaEntity {
         this.updatedAt = LocalDateTime.now();
     }
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 

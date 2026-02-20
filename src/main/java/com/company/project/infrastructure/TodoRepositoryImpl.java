@@ -34,7 +34,7 @@ public class TodoRepositoryImpl implements TodoRepository {
     }
 
     @Override
-    public Optional<Todo> findById(Long id) {
+    public Optional<Todo> findById(String id) {
         return todoJpaRepository.findById(id).map(this::toDomain);
     }
 
@@ -46,12 +46,12 @@ public class TodoRepositoryImpl implements TodoRepository {
     }
 
     @Override
-    public void deleteById(Long id) {
+    public void deleteById(String id) {
         todoJpaRepository.deleteById(id);
     }
 
     @Override
-    public boolean existsById(Long id) {
+    public boolean existsById(String id) {
         return todoJpaRepository.existsById(id);
     }
 

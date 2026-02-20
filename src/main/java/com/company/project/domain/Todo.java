@@ -4,14 +4,14 @@ import java.time.LocalDateTime;
 
 public class Todo {
 
-    private final Long id;
+    private final String id;
     private final String title;
     private final String description;
     private final boolean completed;
     private final LocalDateTime createdAt;
     private final LocalDateTime updatedAt;
 
-    public Todo(Long id, String title, String description, boolean completed, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public Todo(String id, String title, String description, boolean completed, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.title = title;
         this.description = description;
@@ -24,7 +24,7 @@ public class Todo {
         this(null, title, description, false, LocalDateTime.now(), LocalDateTime.now());
     }
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 

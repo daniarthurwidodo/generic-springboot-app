@@ -7,11 +7,11 @@ public interface TodoRepository {
 
     Todo save(Todo todo);
 
-    Optional<Todo> findById(Long id);
+    Optional<Todo> findById(String id);
 
     List<Todo> findAll();
 
-    void deleteById(Long id);
+    void deleteById(String id);
 
-    boolean existsById(Long id);
+    boolean existsById(String id);
 }

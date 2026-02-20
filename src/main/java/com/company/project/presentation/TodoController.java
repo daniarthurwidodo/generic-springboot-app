@@ -56,7 +56,7 @@ public class TodoController {
     @Operation(summary = "Get todo by ID", description = "Retrieves a specific todo item by its ID")
     @ApiResponses.TodoFound
     public ResponseEntity<?> getTodoById(
-            @Parameter(description = "The unique ID of the todo") @PathVariable Long id) {
+            @Parameter(description = "The unique ID of the todo") @PathVariable String id) {
         log.debug("Received request to get todo by id: {}", id);
         var todo = todoService.getTodoById(id);
         if (todo.isPresent()) {
@@ -71,7 +71,7 @@ public class TodoController {
     @Operation(summary = "Update a todo", description = "Updates an existing todo item with new title and description")
     @ApiResponses.TodoUpdated
     public ResponseEntity<?> updateTodo(
-            @Parameter(description = "The unique ID of the todo") @PathVariable Long id,
+            @Parameter(description = "The unique ID of the todo") @PathVariable String id,
             @Valid @RequestBody TodoRequest request) {
         log.info("Received request to update todo with id: {}", id);
         try {
@@ -88,7 +88,7 @@ public class TodoController {
     @Operation(summary = "Toggle todo completion", description = "Toggles the completion status of a todo item")
     @ApiResponses.TodoFound
     public ResponseEntity<?> toggleTodoCompletion(
-            @Parameter(description = "The unique ID of the todo") @PathVariable Long id) {
+            @Parameter(description = "The unique ID of the todo") @PathVariable String id) {
         log.info("Received request to toggle todo completion with id: {}", id);
         try {
             Todo todo = todoService.toggleTodoCompletion(id);
@@ -104,7 +104,7 @@ public class TodoController {
     @Operation(summary = "Delete a todo", description = "Deletes a todo item by its ID")
     @ApiResponses.TodoDeleted
     public ResponseEntity<?> deleteTodo(
-            @Parameter(description = "The unique ID of the todo") @PathVariable Long id) {
+            @Parameter(description = "The unique ID of the todo") @PathVariable String id) {
         log.info("Received request to delete todo with id: {}", id);
         try {
             todoService.deleteTodo(id);

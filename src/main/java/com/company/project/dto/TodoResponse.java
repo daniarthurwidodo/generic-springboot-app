@@ -3,7 +3,7 @@ package com.company.project.dto;
 import java.time.LocalDateTime;
 
 public record TodoResponse(
-        Long id,
+        String id,
         String title,
         String description,
         boolean completed,
