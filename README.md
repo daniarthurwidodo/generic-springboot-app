@@ -11,11 +11,11 @@ A reusable, enterprise-grade backend template built with **Spring Boot 3.2.3** a
 - OpenAPI 3.0 specification with Swagger UI
 
 ### Authentication & Security
-- Spring Security configuration
-- JWT Authentication support (ready for implementation)
-- OAuth2 client support (ready for implementation)
-- Role-Based Access Control (RBAC) foundation
-- OWASP-compliant security practices
+- KrakenD API Gateway for access control and routing
+- Keycloak for authentication and authorization
+- JWT token validation at gateway level
+- OAuth2 with Google login support
+- Spring Security configured for stateless operation (trusts gateway)
 
 ### Database & Storage
 - **PostgreSQL** - Primary RDBMS with JPA/Hibernate
@@ -39,7 +39,9 @@ A reusable, enterprise-grade backend template built with **Spring Boot 3.2.3** a
 |-----------|------------|---------|
 | Runtime | Java | 21 |
 | Framework | Spring Boot | 3.2.3 |
-| Security | Spring Security, JWT (jjwt), OAuth2 | 0.12.5 |
+| API Gateway | KrakenD | Latest |
+| Auth Server | Keycloak | Latest |
+| Security | Spring Security (stateless) | Latest |
 | Databases | PostgreSQL, MongoDB | Latest |
 | Cache | Redis | Latest |
 | Messaging | Apache Kafka | Latest |
@@ -72,13 +74,15 @@ com.company.project
 - Java 21+
 - Podman & Podman Compose (or Docker & Docker Compose)
 
-### 1. Start Infrastructure (Databases, Kafka, Redis)
+### 1. Start Infrastructure (Gateway, Auth, Databases, Kafka, Redis)
 
 ```bash
 podman compose up -d
 ```
 
-This starts infrastructure services:
+This starts all services:
+- `krakend` - API Gateway (port 8000)
+- `keycloak` - Authentication server (port 8180)
 - `postgres` - PostgreSQL database (port 5432)
 - `mongodb` - MongoDB database (port 27017)
 - `redis` - Redis cache (port 6379)
@@ -98,7 +102,9 @@ Or build and run the JAR:
 java -jar target/*.jar
 ```
 
-The app will be available at `http://localhost:8080`.
+The app will be available at:
+- `http://localhost:8080` - Direct Spring Boot access
+- `http://localhost:8000` - Through KrakenD API Gateway (recommended)
 
 ### Useful Commands
 
@@ -159,18 +165,25 @@ The API is documented using OpenAPI 3.0 specification.
 
 ### Available Endpoints
 
+All endpoints are publicly accessible (no authentication required):
+
 | Method | Endpoint | Description | Status Code |
 |--------|----------|-------------|-------------|
 | GET | `/api/health` | Health check | 200 |
 | GET | `/hello` | Hello endpoint | 200 |
+| GET | `/actuator/**` | Spring Boot actuator endpoints | 200 |
 | POST | `/api/v1/sql/todo` | Create todo | 201 |
 | GET | `/api/v1/sql/todo` | Get all todos | 200 |
 | GET | `/api/v1/sql/todo/{id}` | Get todo by ID (ULID) | 200, 404 |
 | PUT | `/api/v1/sql/todo/{id}` | Update todo | 200, 404 |
 | PATCH | `/api/v1/sql/todo/{id}/toggle` | Toggle completion status | 200, 404 |
 | DELETE | `/api/v1/sql/todo/{id}` | Delete todo | 204, 404 |
+| GET | `/swagger-ui/**` | Swagger UI | 200 |
+| GET | `/v3/api-docs/**` | OpenAPI documentation | 200 |
 
 Note: Todo IDs use ULID format (e.g., `01ARZ3NDEKTSV4RRFFQ69G5FAV`)
+
+Access through KrakenD Gateway: `http://localhost:8000`
 
 ### Testing with Insomnia
 
@@ -258,12 +271,21 @@ src/main/java/com/company/project/
 └── presentation/        # REST controllers, DTOs, API responses
 ```
 
+## API Gateway & Authentication
+
+This application uses KrakenD as an API gateway with Keycloak for authentication. Currently, all endpoints are configured as public for development purposes.
+
+For production deployment with authentication:
+1. See `API_GATEWAY_QUICKSTART.md` for gateway setup
+2. See `KEYCLOAK_SETUP.md` for authentication configuration
+3. Update KrakenD endpoints to require JWT validation
+
 ## Future Enhancements
 
-- [ ] Complete JWT authentication implementation
-- [ ] OAuth2 social login integration
+- [ ] Enable JWT authentication on protected endpoints
+- [ ] Implement role-based access control at gateway level
 - [ ] Kubernetes deployment manifests
-- [ ] Rate limiting middleware
+- [ ] Rate limiting middleware in KrakenD
 - [ ] Multi-tenancy support
 - [ ] Centralized logging (ELK/Loki)
 - [ ] API versioning strategy

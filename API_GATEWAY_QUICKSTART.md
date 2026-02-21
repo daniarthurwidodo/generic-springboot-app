@@ -19,7 +19,7 @@ All services are now running successfully:
 ### 1. Test KrakenD Health (No Auth Required)
 
 ```bash
-curl http://localhost:8000/health
+curl http://localhost:8000/api/health
 ```
 
 ### 2. Start Your Spring Boot App
@@ -28,14 +28,65 @@ curl http://localhost:8000/health
 ./mvnw spring-boot:run
 ```
 
-### 3. Test Through Gateway (Will Fail - No Auth Yet)
+### 3. Test Public Endpoints Through Gateway
+
+All endpoints are currently public (no authentication required):
 
 ```bash
-curl http://localhost:8000/api/v1/todos
-# Expected: 401 Unauthorized (JWT validation enabled)
+# Health check
+curl http://localhost:8000/api/health
+
+# Hello endpoint
+curl http://localhost:8000/hello
+
+# List todos
+curl http://localhost:8000/api/v1/sql/todo
+
+# Create todo
+curl -X POST http://localhost:8000/api/v1/sql/todo \
+  -H "Content-Type: application/json" \
+  -d '{"title":"Test Todo","description":"From KrakenD"}'
+
+# Swagger UI
+open http://localhost:8000/swagger-ui/index.html
 ```
 
-## Next Steps
+## Current Configuration
+
+### Security Model
+
+The application currently uses a simplified security model:
+
+- **KrakenD Gateway**: Handles routing and CORS, all endpoints are public
+- **Spring Boot**: Stateless security with all requests permitted (trusts gateway)
+- **Keycloak**: Available but not enforcing authentication (ready for production use)
+
+This setup is ideal for:
+- Development and testing
+- Internal APIs behind a firewall
+- Prototyping and demos
+
+### Spring Boot Security
+
+`SecurityConfig.java` is configured to:
+- Disable CSRF (not needed for stateless APIs)
+- Use stateless session management
+- Permit all requests (relies on KrakenD for access control)
+
+```java
+@Bean
+public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    http
+        .csrf(csrf -> csrf.disable())
+        .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+        .authorizeHttpRequests(auth -> auth.anyRequest().permitAll());
+    return http.build();
+}
+```
+
+## Enabling Authentication (Optional)
+
+To enable JWT authentication for production, follow these steps:
 
 ### Configure Keycloak (Required)
 
@@ -62,16 +113,23 @@ Follow the detailed setup in `KEYCLOAK_SETUP.md`:
 
 ```
 ┌─────────┐      ┌─────────┐      ┌──────────┐      ┌─────────────┐
-│ Client  │─────▶│ KrakenD │─────▶│ Keycloak │      │ Spring Boot │
+│ Client  │─────▶│ KrakenD │      │ Keycloak │      │ Spring Boot │
 │         │      │  :8000  │      │  :8180   │      │    :8080    │
 └─────────┘      └─────────┘      └──────────┘      └─────────────┘
                       │                  │                   │
                       │                  │                   │
                       └──────────────────┴───────────────────┘
-                         JWT Validation & Token Relay
+                         Public Access (Auth Optional)
 ```
 
-### How It Works
+### Current Flow (Public Access)
+
+1. **API Request**: Client sends request to KrakenD
+2. **Routing**: KrakenD routes to Spring Boot
+3. **Processing**: Spring Boot processes request
+4. **Response**: Response returned to client
+
+### Production Flow (With Authentication)
 
 1. **User Login**: Client redirects to Keycloak for authentication
 2. **Google OAuth**: User can login with Google account
@@ -83,15 +141,22 @@ Follow the detailed setup in `KEYCLOAK_SETUP.md`:
 
 ## KrakenD Configuration
 
-Current endpoints configured in `krakend/krakend.json`:
+Current endpoints configured in `krakend/krakend.json` (all public):
 
-- `GET /health` - Health check (no auth)
-- `GET /api/v1/todos` - List todos (requires JWT with 'user' role)
-- `GET /api/v1/todos/{id}` - Get todo (requires JWT)
-- `POST /api/v1/todos` - Create todo (requires JWT)
-- `PUT /api/v1/todos/{id}` - Update todo (requires JWT)
-- `PATCH /api/v1/todos/{id}/toggle` - Toggle todo (requires JWT)
-- `DELETE /api/v1/todos/{id}` - Delete todo (requires JWT)
+- `GET /api/health` - Health check
+- `GET /hello` - Hello endpoint
+- `GET /actuator/{path}` - Spring Boot actuator
+- `GET /api/v1/sql/todo` - List todos
+- `GET /api/v1/sql/todo/{id}` - Get todo
+- `POST /api/v1/sql/todo` - Create todo
+- `PUT /api/v1/sql/todo/{id}` - Update todo
+- `PATCH /api/v1/sql/todo/{id}/toggle` - Toggle todo
+- `DELETE /api/v1/sql/todo/{id}` - Delete todo
+- `GET /swagger-ui/{path}` - Swagger UI
+- `GET /v3/api-docs/**` - OpenAPI docs
+- `GET /swagger-resources/{path}` - Swagger resources
+
+To add JWT authentication to specific endpoints, add the `extra_config` section with `auth/validator` (see KEYCLOAK_SETUP.md).
 
 ## Update Spring Boot to Validate JWT
 
@@ -197,20 +262,28 @@ podman compose ps
 
 ## Security Notes
 
-⚠️ **Development Mode Only**
+⚠️ **Current Configuration: Public Access**
 
-Current configuration is for development:
+All endpoints are currently public for development and testing:
+- No authentication required
+- Suitable for development, internal APIs, or prototyping
+- Not recommended for production with sensitive data
+
+⚠️ **Development Mode Settings**
+
+Current configuration uses development defaults:
 - Default passwords (change in production)
 - HTTP only (use HTTPS in production)
 - Permissive CORS (restrict in production)
-- JWT validation with `disable_jwk_security: true` (remove in production)
+- No rate limiting (add in production)
 
 ## Production Checklist
 
+- [ ] Enable JWT authentication on protected endpoints
+- [ ] Configure role-based access control
 - [ ] Change all default passwords
 - [ ] Enable HTTPS/TLS
 - [ ] Configure proper CORS origins
-- [ ] Set secure JWT validation
 - [ ] Enable rate limiting in KrakenD
 - [ ] Configure token expiration policies
 - [ ] Set up monitoring and logging

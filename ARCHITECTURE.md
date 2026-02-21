@@ -64,7 +64,13 @@ REST controllers and API endpoints.
 - **HealthController**: Uses ResponseBuilderService
 
 ### 5. Infrastructure Layer (`com.company.project.infrastructure`)
-Technical implementations (JPA, database, etc.)
+Technical implementations (JPA, database, security, etc.)
+
+- **SecurityConfig**: Spring Security configuration
+  - Stateless session management
+  - CSRF disabled (not needed for stateless APIs)
+  - All requests permitted (trusts KrakenD gateway for access control)
+  - Ready for JWT validation if needed in future
 
 ## Benefits of This Architecture
 
@@ -82,11 +88,17 @@ Technical implementations (JPA, database, etc.)
 - Easy to add new entities by extending BaseController
 - New services can implement CrudService interface
 - Consistent patterns across the codebase
+- Gateway-based architecture allows horizontal scaling
 
 ### 4. Testability
 - Services are interface-based for easy mocking
 - Generic components can be tested once
 - Clear separation of concerns
+
+### 5. Security
+- Access control handled at gateway level (KrakenD)
+- Spring Boot trusts gateway for simplified internal security
+- Easy to enable JWT validation when needed
 
 ## How to Add a New Entity
 
